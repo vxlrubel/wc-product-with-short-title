@@ -15,6 +15,9 @@ class WC_Product_Short_Title{
     // create singletone instance
     private static $instance;
 
+    // create slug for WC_Product_Short_Title
+    private $slug = 'wc-product-short-title';
+
     // execute all the default methods
     public function __construct(){
 
@@ -29,6 +32,9 @@ class WC_Product_Short_Title{
 
         // create product shortcode
         add_shortcode( 'product_info', [ $this, 'get_product_details'] );
+
+        // enqueu the stylesheet
+        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_stylesheet' ] );
     }
 
     /**
@@ -55,7 +61,7 @@ class WC_Product_Short_Title{
      */
     public function settings_page( $links, $file ){
         if( plugin_basename( __FILE__ ) === $file ){
-            $url = esc_url( admin_url('admin.php'). '?page=wc-header-search' );
+            $url = esc_url( admin_url( "admin.php?page={$this->slug}" ) );
             $download_url = 'https://github.com/vxlrubel/wc-product-with-short-title/archive/refs/heads/main.zip';
             $settings = "<a href=\"{$url}\">Settings</a> | ";
             $settings .= "<a href=\"{$download_url}\">Download</a>";
@@ -75,7 +81,7 @@ class WC_Product_Short_Title{
             'WC Product Short Title',             // page title
             'WC Product Short Title',             // menu title
             'edit_posts',                         // capability
-            'wc-product-short-title',             // menu slug
+            $this->slug,                          // menu slug
             [ $this, '_ch_product_short_title'],  // callback
             110                                   // position
         );
@@ -102,7 +108,8 @@ class WC_Product_Short_Title{
 
         $atts = shortcode_atts(
             [
-                'count' => 4
+                'count'  => 4,
+                'letter' => 30
             ],
             $atts
         );
@@ -122,6 +129,17 @@ class WC_Product_Short_Title{
 
         
         return ob_get_clean();
+    }
+
+    /**
+     * enqueue stylesheet
+     *
+     * @return void
+     */
+    public function enqueue_stylesheet(){
+        // enqueue stylesheet
+        wp_enqueue_style( 'wc-product-short-title', plugins_url( 'assets/css/main.css', __FILE__ ) );
+
     }
 
 
