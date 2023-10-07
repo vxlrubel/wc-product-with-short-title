@@ -25,6 +25,6 @@
     <li>It's generate the <span style="font-weight: 600;">shortcode</span> <span style="font-weight: 600;"> "[product_info]" </span> with two attributes like (01. count, 02. letter)</li>
     <li>count: count will show how many product you want to display</li>
     <li>letter: letter will show how many characters you want to use into title of the product.</li>
-    <li>Use this shortcode <input class="regular-text" type="text" value='[product_info count="6" letter="35"]'></li>
+    <li>Use this shortcode [product_info count="6" letter="35"]</li>
     <li>That short code will show 6 product and the title with 35 characters. If you want to change then change the value of attributes.</li>
 </ul>
