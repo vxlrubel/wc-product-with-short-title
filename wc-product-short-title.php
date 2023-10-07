@@ -108,6 +108,7 @@ class WC_Product_Short_Title{
 
         $atts = shortcode_atts(
             [
+                'id'     => uniqid(),
                 'count'  => 4,
                 'letter' => 30
             ],
@@ -122,11 +123,60 @@ class WC_Product_Short_Title{
         $qry = new WP_Query( $args );
 
         if( $qry->have_posts() ):
-            require_once dirname(__FILE__) . '/inc/get-product-info.php';
+            // require_once dirname(__FILE__) . '/inc/get-product-info.php';
+            echo "<ul class=\"wc-product-info\" id=\"wc-product-{$atts['id']}\">";
+            while( $qry->have_posts() ): $qry->the_post();
+                $get_title   = get_the_title();
+                $short_title = mb_strimwidth( $get_title, 0, $atts['letter'] ) . '...';
+                $get_link    = esc_url( get_permalink( get_the_ID() ) );
+                $categories  = get_the_terms( get_the_ID(), 'product_cat' );
+            ?>
+                <li class="wc-product-item">
+                    <div class="product-thumb">
+                        <?php the_post_thumbnail();?>
+                    </div>
+                    <h5 class="wc-product-category">
+                        <?php
+                            foreach ( $categories as $category ) {
+                                $link = get_term_link( $category );
+                                echo "<a href=\"{$link}\">{$category->name}</a>";
+                            }
+                        ?>
+                    </h5>
+                    <h2 class="wc-product-title">
+                        <a href="<?php echo $get_link; ?>" target="_blank">
+                            <?php echo $short_title; ?>
+                        </a>
+                    </h2>
+                    
+                    <div class="wc-product-ratting">
+                        <?php
+                            woocommerce_template_single_rating( [ 'id' => get_the_ID() ] );
+                        ?>
+                    </div>
+                    <div class="wc-product-price">
+                        <?php
+                            echo wc_price(get_post_meta(get_the_ID(), '_price', true));
+                        ?>
+                    </div>
+
+                    <div class="wc-product-button">
+                        <?php
+                            woocommerce_template_loop_add_to_cart(
+                                [
+                                    'class' => 'button product_type_simple add_to_cart_button ajax_add_to_cart'
+                                ]
+                            );
+                        ?>
+                    </div>
+                </li>
+                
+            <?php endwhile;
+            echo '</ul>';
+            wp_reset_postdata();
         else:
             echo 'No Product Found';
         endif;
-
         
         return ob_get_clean();
     }
