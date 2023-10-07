@@ -16,8 +16,7 @@
 
 @media(min-width: 992px) {
     .wc-product-info {
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 30px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 }
 
@@ -73,7 +72,18 @@
 .wc-product-info .wc-product-title {
     text-align: center;
     font-size: 0.9375rem;
-    min-height: 35px;
+    min-height: 25px !important;
+    line-height: 20px;
+    margin-bottom: 15px;
+    font-weight: 400 !important;
+}
+
+.wc-product-info .wc-product-ratting {
+    text-align: center;
+}
+
+.wc-product-info .wc-product-ratting .review-link.noreview {
+    display: none;
 }
 
 .wc-product-info .product-thumb img {
@@ -84,4 +94,9 @@
 
 .wc-product-info .wc-product-button {
     text-align: center;
+}
+
+.wc-product-info .wc-product-button .quickview,
+.wc-product-info .wc-product-button .added_to_cart.wc-forward {
+    display: none !important;
 }
