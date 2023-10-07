@@ -34,6 +34,12 @@ echo '<ul class="wc-product-info">';
                     woocommerce_template_single_rating( [ 'id' => get_the_ID() ] );
                 ?>
             </div>
+            <div class="wc-product-price">
+                <?php
+                    echo wc_price(get_post_meta(get_the_ID(), '_price', true));
+                ?>
+            </div>
+
             <div class="wc-product-button">
                 <?php
                     woocommerce_template_loop_add_to_cart(

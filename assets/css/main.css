@@ -92,8 +92,13 @@
     width: auto !important;
 }
 
+.wc-product-info .wc-product-price,
 .wc-product-info .wc-product-button {
-    text-align: center;
+    text-align: center !important;
+}
+
+.wc-product-info .wc-product-price {
+    margin-bottom: 5px;
 }
 
 .wc-product-info .wc-product-button .quickview,

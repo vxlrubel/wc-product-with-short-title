@@ -34,6 +34,5 @@ defined('ABSPATH') || exit; ?>
         <li>letter: letter will show how many characters you want to use into title of the product.</li>
         <li>Use this shortcode <input class="regular-text" type="text" value='[product_info count="6" letter="35"]'></li>
         <li>That short code will show 6 product and the title with 35 characters. If you want to change then change the value of attributes.</li>
-        <li>Thank You...</li>
     </ul>
 </div>
