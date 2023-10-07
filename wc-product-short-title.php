@@ -18,8 +18,17 @@ class WC_Product_Short_Title{
     // execute all the default methods
     public function __construct(){
 
+        // settings link
+        add_filter( 'plugin_action_links', [ $this, 'settings_page'], 10, 2 );
+
         // documentation
         add_filter( 'plugin_row_meta', [ $this, 'documentation' ], 10, 2 );
+
+        // create admin menu page
+        add_action( 'admin_menu', [ $this, 'admin_menu_page' ] );
+
+        // create product shortcode
+        add_shortcode( 'product_info', [ $this, 'get_product_details'] );
     }
 
     /**
@@ -35,6 +44,84 @@ class WC_Product_Short_Title{
             $meta[] = "<a href=\"{$url}\" target=\"_blank\">Documentation</a>";
         }
         return $meta;
+    }
+
+    /**
+     * create settings page
+     *
+     * @param [type] $links
+     * @param [type] $file
+     * @return void
+     */
+    public function settings_page( $links, $file ){
+        if( plugin_basename( __FILE__ ) === $file ){
+            $url = esc_url( admin_url('admin.php'). '?page=wc-header-search' );
+            $download_url = 'https://github.com/vxlrubel/wc-product-with-short-title/archive/refs/heads/main.zip';
+            $settings = "<a href=\"{$url}\">Settings</a> | ";
+            $settings .= "<a href=\"{$download_url}\">Download</a>";
+            array_unshift( $links, $settings );
+        }
+        return $links;
+    }
+
+    /**
+     * create a admin menu page
+     *
+     * @return void
+     */
+    public function admin_menu_page(){
+        add_submenu_page(
+            'woocommerce',                        // parent slug
+            'WC Product Short Title',             // page title
+            'WC Product Short Title',             // menu title
+            'edit_posts',                         // capability
+            'wc-product-short-title',             // menu slug
+            [ $this, '_ch_product_short_title'],  // callback
+            110                                   // position
+        );
+    }
+
+    /**
+     * admin menu page callback
+     *
+     * @return void
+     */
+    public function _ch_product_short_title(){
+        require_once dirname(__FILE__) . '/inc/admin-menu-page.php';
+    }
+
+    /**
+     * get the product
+     *
+     * @param [type] $atts
+     * @return void
+     */
+    public function get_product_details( $atts ){
+
+        ob_start();
+
+        $atts = shortcode_atts(
+            [
+                'count' => 4
+            ],
+            $atts
+        );
+
+        $args = [
+            'post_type'      => 'product',
+            'posts_per_page' => $atts['count']
+        ];
+
+        $qry = new WP_Query( $args );
+
+        if( $qry->have_posts() ):
+            require_once dirname(__FILE__) . '/inc/get-product-info.php';
+        else:
+            echo 'No Product Found';
+        endif;
+
+        
+        return ob_get_clean();
     }
 
 
