@@ -47,7 +47,7 @@
     width: 100%;
     flex: 0 0 100%;
     background-color: #dfe6e9;
-    padding: 15px;
+    padding: 15px 15px 25px;
     border-radius: 15px;
 }
 
@@ -82,6 +82,10 @@
     text-align: center;
 }
 
+.wc-product-info .wc-product-ratting .woocommerce-product-rating {
+    margin-bottom: 15px;
+}
+
 .wc-product-info .wc-product-ratting .review-link.noreview {
     display: none;
 }
@@ -98,7 +102,9 @@
 }
 
 .wc-product-info .wc-product-price {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 17px;
 }
 
 .wc-product-info .wc-product-button .quickview,
